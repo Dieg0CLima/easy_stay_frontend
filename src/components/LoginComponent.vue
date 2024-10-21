@@ -1,5 +1,5 @@
 <template>
-    <div class="background-container"> <!-- Container maior com a imagem de fundo -->
+    <div class="background-container"> 
       <div class="nes-container is-rounded is-dark login-container">
         <h2 class="title">Login</h2>
         <form @submit.prevent="handleLogin">
@@ -14,7 +14,6 @@
           <button type="submit" class="nes-btn is-primary">Entrar</button>
         </form>
   
-        <!-- Exibir mensagem de sucesso ou erro com animação -->
         <transition name="fade">
           <div
             v-if="successMessage"
@@ -41,6 +40,7 @@
   import { ref } from 'vue';
   import axios from 'axios';
   import { useAuthStore } from '@/stores/auth';
+  import { useRouter } from 'vue-router';  // Importa o Vue Router
   import 'animate.css';
   
   const email = ref('');
@@ -49,6 +49,7 @@
   const successMessage = ref('');
   const animationClass = ref('animate__backInRight');
   const authStore = useAuthStore();
+  const router = useRouter();  // Use o router para redirecionamento
   
   const hideMessageAfterTimeout = (timeout = 3000) => {
     setTimeout(() => {
@@ -71,9 +72,13 @@
       authStore.setToken(token);
   
       successMessage.value = 'Login realizado com sucesso!';
-      errorMessage.value = '';
+      errorMessage.value = ''; 
   
       hideMessageAfterTimeout();
+  
+      setTimeout(() => {
+        router.push({ name: 'HelloWorld' });
+      }, 1000); 
     } catch (error) {
       animationClass.value = 'animate__backInRight';
   
@@ -84,17 +89,17 @@
         errorMessage.value = 'Erro ao tentar realizar login';
       }
   
-      hideMessageAfterTimeout();
+      hideMessageAfterTimeout(); 
     }
   };
   </script>
   
   <style scoped>
-  /* Definindo a imagem de fundo no container maior */
+  /* Definindo o GIF de fundo no container maior */
   .background-container {
     width: 100vw;
     height: 100vh;
-    background: url('/src/assets/background.jpg') no-repeat center center fixed;
+    background: url('/src/assets/background.gif') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     justify-content: center;
